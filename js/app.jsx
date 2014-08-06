@@ -52,7 +52,7 @@ var App = React.createClass({
           <h1>Bill Murray Simulator</h1>
         </div>
         <div className="row box">
-          <div className="col-xs-2">
+          <div className="col-xs-4">
             <label htmlFor="numberOfMurrays">Number of Bill Murrays</label>
             <input id="numberOfMurrays" type="number" className="form-control"
                    value={this.state.numberOfMurrays} onChange={this.updateNumberOfMurrays}/>
@@ -136,8 +136,11 @@ var MurrayRow = React.createClass({
     return(
       <tr key={this.props.key}>
         <td>{this.props.key + 1}</td>
-        <td><img src={"http://fillmurray.com/" + this.props.murrayWidth + "/" +
-                      this.props.murrayHeight}/></td>
+        <td>
+          <img src={"http://fillmurray.com/" + this.props.murrayWidth + "/" + this.props.murrayHeight}
+               width={this.props.murrayWidth}
+               height={this.props.murrayHeight}/>
+        </td>
         <td>{this.props.quote}</td>
       </tr>
     )
