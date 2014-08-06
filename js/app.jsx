@@ -51,7 +51,6 @@ var App = React.createClass({
         <div className="row">
           <h1>Bill Murray Simulator</h1>
         </div>
-        //TODO: all the form stuff to another component
         <div className="row box">
           <div className="col-xs-2">
             <label htmlFor="numberOfMurrays">Number of Bill Murrays</label>
