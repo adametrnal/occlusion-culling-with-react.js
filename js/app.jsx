@@ -5,13 +5,8 @@ var App = React.createClass({
     return({
       numberOfMurrays: 10,
       murrayWidth:150,
-      murrayHeight:100,
-      quotes:[{quote:''}]
+      murrayHeight:100
     })
-  },
-
-  componentDidMount: function(){
-    this.getQuotesForMurrays();
   },
 
   updateMurrayWidth: function(e){
@@ -24,25 +19,6 @@ var App = React.createClass({
 
   updateNumberOfMurrays: function(e){
     this.setState({numberOfMurrays: +e.target.value })
-  },
-
-  getQuotesForMurrays: function() {
-    var that = this;
-    $.get('/api/quotes.json')
-     .done(function(data){
-       that.setState({
-         quotes: data
-       });
-     })
-  },
-
-  getRowData: function(){
-     var rowData = [];
-     var quotes = this.state.quotes;
-     for(var i=0; i < this.state.numberOfMurrays; i++){
-       rowData.push({quote: quotes[i % quotes.length].quote, key:i});
-     }
-     return rowData;
   },
 
   render: function(){
@@ -68,84 +44,12 @@ var App = React.createClass({
                    value={this.state.murrayHeight} onChange={this.updateMurrayHeight}/>
           </div>
         </div>
-        <MurrayTable numRows={this.state.numberOfMurrays}
-                     murrayWidth={this.state.murrayWidth}
-                     murrayHeight={this.state.murrayHeight}
-                     rowData={this.getRowData()}/>
 
       </div>
     )
   }
 });
 
-var MurrayTable = React.createClass({
-    getInitialState: function(){
-      return {
-        tableScrollY:0
-      }
-    },
-
-    componentDidMount: function(){
-      var that = this;
-      var tableContainer = document.querySelector('.table-container');
-      tableContainer.addEventListener('scroll', function(e) {
-        that.setState({
-          tableScrollY: Math.max(e.currentTarget.scrollTop, 0),
-        })
-      });
-    },
-
-    render: function(){
-      var murrayWidth = this.props.murrayWidth,
-          murrayHeight = this.props.murrayHeight,
-          rowData = this.props.rowData;
-
-      var tableScrollY = +this.state.tableScrollY,
-          rowHeight = +murrayHeight + 10,
-          tableHeight = rowHeight * 4,
-          firstItem = tableScrollY / rowHeight | 0,
-          lastItem = firstItem + (tableHeight / rowHeight | 0) + 2,
-          offset = tableScrollY % rowHeight;
-
-      var fullTableHeight = {height: this.props.numRows * (murrayHeight + 10)}
-
-      var murrayRows = rowData.slice(firstItem, lastItem).map(function(murrayRow){
-        return <MurrayRow quote={murrayRow.quote}
-                          key={murrayRow.key}
-                          murrayWidth={murrayWidth}
-                          murrayHeight={murrayHeight}/>;
-      });
-
-      return(
-        <div className="row table-container" style={{height: tableHeight}} >
-          <div className="outer-table"  style={fullTableHeight} >
-            <table className="inner-table table table-bordered table-striped table-condensed" style={{top: tableScrollY}}>
-              <tbody>
-                {murrayRows}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      )
-    }
-});
-
-var MurrayRow = React.createClass({
-
-  render: function(){
-    return(
-      <tr key={this.props.key}>
-        <td>{this.props.key + 1}</td>
-        <td>
-          <img src={"http://fillmurray.com/" + this.props.murrayWidth + "/" + this.props.murrayHeight}
-               width={this.props.murrayWidth}
-               height={this.props.murrayHeight}/>
-        </td>
-        <td>{this.props.quote}</td>
-      </tr>
-    )
-  }
-});
 
 React.renderComponent(
   <App/>,
