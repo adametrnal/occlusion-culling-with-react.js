@@ -79,37 +79,14 @@ var App = React.createClass({
 });
 
 var MurrayTable = React.createClass({
-    getInitialState: function(){
-      return {
-        tableScrollY:0
-      }
-    },
-
-    componentDidMount: function(){
-      var that = this;
-      var tableContainer = document.querySelector('.table-container');
-      tableContainer.addEventListener('scroll', function(e) {
-        that.setState({
-          tableScrollY: Math.max(e.currentTarget.scrollTop, 0),
-        })
-      });
-    },
 
     render: function(){
       var murrayWidth = this.props.murrayWidth,
           murrayHeight = this.props.murrayHeight,
           rowData = this.props.rowData;
 
-      var tableScrollY = +this.state.tableScrollY,
-          rowHeight = +murrayHeight + 10,
-          tableHeight = rowHeight * 4,
-          firstItem = tableScrollY / rowHeight | 0,
-          lastItem = firstItem + (tableHeight / rowHeight | 0) + 2,
-          offset = tableScrollY % rowHeight;
 
-      var fullTableHeight = {height: this.props.numRows * (murrayHeight + 10)}
-
-      var murrayRows = rowData.slice(firstItem, lastItem).map(function(murrayRow){
+      var murrayRows = rowData.map(function(murrayRow){
         return <MurrayRow quote={murrayRow.quote}
                           key={murrayRow.key}
                           murrayWidth={murrayWidth}
@@ -117,9 +94,9 @@ var MurrayTable = React.createClass({
       });
 
       return(
-        <div className="row table-container" style={{height: tableHeight}} >
-          <div className="outer-table"  style={fullTableHeight} >
-            <table className="inner-table table table-bordered table-striped table-condensed" style={{top: tableScrollY}}>
+        <div className="row table-container" >
+          <div className="outer-table" >
+            <table className="inner-table table table-bordered table-striped table-condensed">
               <tbody>
                 {murrayRows}
               </tbody>
