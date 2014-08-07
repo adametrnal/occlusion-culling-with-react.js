@@ -1,5 +1,5 @@
 # Occlussion Culling with React.js 
-Step 5
+### Step 5
 In which we add a few bits of logic to perform basic Occlusion Culling. This is a fancy way of saying that we will only render what's on the screen. This code should be the same as master.
 
 Note that we can now render on the order of 1,000,000 rows and have them be immediatly updatable. 
